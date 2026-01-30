@@ -1019,11 +1019,12 @@
             background: rgba(255, 100, 100, 0.4);
         }
 
+        /* 队伍槽位容器 - 缩小到85% */
         .team-slots-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            min-height: 400px;
+            min-height: 323px; /* 原380px * 0.85 = 323px */
         }
 
         .team-slot {
@@ -1033,7 +1034,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 380px;
+            min-height: 323px; /* 原380px * 0.85 = 323px */
             transition: all 0.3s;
         }
 
@@ -1051,15 +1052,15 @@
         }
 
         .slot-placeholder i {
-            font-size: 3rem;
+            font-size: 2.55rem; /* 原3rem * 0.85 = 2.55rem */
             margin-bottom: 15px;
             display: block;
         }
 
-        /* 角色卡片样式 */
+        /* 角色卡片样式 - 缩小到85% */
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(221px, 1fr)); /* 原280px * 0.85 = 238px，调整为221px以更好适配 */
             gap: 25px;
             margin-top: 20px;
         }
@@ -1070,8 +1071,8 @@
             overflow: visible;
             transition: all 0.3s;
             position: relative;
-            height: 420px;
-            width: 260px;
+            height: 357px; /* 原420px * 0.85 = 357px */
+            width: 221px; /* 原260px * 0.85 = 221px */
             margin: 0 auto;
             border: 1px solid rgba(250, 103, 178, 0.2);
             backdrop-filter: blur(5px);
@@ -1087,9 +1088,10 @@
             opacity: 0.6;
         }
 
+        /* 图片容器缩小到85% */
         .card-image-container {
             width: 100%;
-            height: 260px;
+            height: 221px; /* 原260px * 0.85 = 221px */
             overflow: hidden;
             position: relative;
             display: flex;
@@ -1110,13 +1112,14 @@
             transform: scale(1.05);
         }
 
+        /* 卡片内容区域 - 文字保持原大小，调整内边距 */
         .card-content {
-            padding: 15px;
+            padding: 12px; /* 原15px * 0.85 = 12.75px，取12px */
             position: relative;
         }
 
         .card-name {
-            font-size: 1.4rem;
+            font-size: 1.4rem; /* 保持原大小 */
             font-weight: 700;
             color: var(--light-pink);
             margin-bottom: 8px;
@@ -1128,13 +1131,13 @@
         .card-stars {
             display: flex;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* 原10px * 0.85 = 8.5px，取8px */
             gap: 2px;
         }
 
         .star-icon {
             color: #ccc;
-            font-size: 1.2rem;
+            font-size: 1.2rem; /* 保持原大小 */
         }
 
         .star-icon.filled {
@@ -1144,8 +1147,8 @@
         .card-scores {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            margin-bottom: 8px; /* 原10px * 0.85 = 8.5px，取8px */
+            font-size: 0.95rem; /* 保持原大小 */
         }
 
         .pve-score {
@@ -1160,11 +1163,11 @@
             background: rgba(250, 103, 178, 0.1);
             border: none;
             color: var(--light-purple);
-            padding: 8px 12px;
+            padding: 8px 12px; /* 保持原大小 */
             border-radius: 8px;
             width: 100%;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* 保持原大小 */
             transition: all 0.3s;
             display: flex;
             justify-content: space-between;
@@ -1230,7 +1233,7 @@
             max-height: 200px;
             overflow-y: auto;
             padding-right: 5px;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* 保持原大小 */
             line-height: 1.5;
             color: var(--text-color);
         }
@@ -1253,13 +1256,14 @@
             background: rgba(250, 103, 178, 0.7);
         }
 
+        /* 卡片操作按钮缩小 */
         .card-actions {
             position: absolute;
-            right: 10px;
-            top: 10px;
+            right: 8px; /* 原10px * 0.85 = 8.5px，取8px */
+            top: 8px; /* 原10px * 0.85 = 8.5px，取8px */
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px; /* 原8px * 0.85 = 6.8px，取6px */
             opacity: 0;
             transition: opacity 0.3s;
             z-index: 10;
@@ -1270,15 +1274,15 @@
         }
 
         .card-action-btn {
-            width: 36px;
-            height: 36px;
+            width: 31px; /* 原36px * 0.85 = 30.6px，取31px */
+            height: 31px; /* 原36px * 0.85 = 30.6px，取31px */
             border-radius: 50%;
             border: none;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.85rem; /* 原1rem * 0.85 = 0.85rem */
             transition: all 0.3s;
         }
 
@@ -1403,9 +1407,10 @@
             font-size: 0.9rem;
         }
 
+        /* 隐藏卡片容器也缩小 */
         .hidden-cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(221px, 1fr)); /* 原280px * 0.85 = 238px，调整为221px以更好适配 */
             gap: 25px;
             margin-top: 25px;
             padding-top: 25px;
@@ -1477,6 +1482,44 @@
 
         .breathe-effect {
             animation: breathe 3s infinite ease-in-out;
+        }
+
+        /* 拖拽滚动指示器 */
+        .drag-scroll-indicator {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(90deg, 
+                rgba(250, 103, 178, 0.1), 
+                rgba(250, 103, 178, 0.3));
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drag-scroll-indicator.top {
+            top: 0;
+            border-bottom: 2px solid rgba(250, 103, 178, 0.5);
+        }
+
+        .drag-scroll-indicator.bottom {
+            bottom: 0;
+            border-top: 2px solid rgba(250, 103, 178, 0.5);
+        }
+
+        .drag-scroll-indicator.active {
+            opacity: 1;
+        }
+
+        .drag-scroll-indicator i {
+            color: var(--primary-pink);
+            font-size: 1.2rem;
+            margin-right: 10px;
         }
 
         /* 响应式设计 */
@@ -1557,6 +1600,16 @@
 <body>
     <!-- 粒子效果容器 -->
     <div id="particles-js"></div>
+    
+    <!-- 拖拽滚动指示器 -->
+    <div class="drag-scroll-indicator top" id="topScrollIndicator">
+        <i class="fas fa-arrow-up"></i>
+        <span>向上滚动</span>
+    </div>
+    <div class="drag-scroll-indicator bottom" id="bottomScrollIndicator">
+        <i class="fas fa-arrow-down"></i>
+        <span>向下滚动</span>
+    </div>
 
     <!-- 顶部标题区域 -->
     <div class="header-container">
@@ -1749,7 +1802,7 @@
 
     <!-- 页脚 -->
     <footer>
-        欲神幻想梯度榜 v1.5 · FTN工作室出品 · 新增批量导入图片功能
+        欲神幻想梯度榜 v1.6 · FTN工作室出品 · 优化角色卡片拖动体验
     </footer>
 
     <!-- 教程模态框 -->
@@ -1787,18 +1840,19 @@
                 <p>提供更好的配队预览体验：</p>
                 <ul>
                     <li><strong>切换队伍</strong>：点击上方标签切换不同队伍</li>
-                    <li><strong>添加角色</strong>：从“我的角色”区域拖拽卡片到队伍虚线框中</li>
-                    <li><strong>移除角色</strong>：点击队伍中卡片右上角的移除按钮，或拖拽回“我的角色”区域亦可</li>
-                    <li><strong>清空队伍</strong>：点击右上角“清空当前配队”按钮即可一键清空当前选中的队伍</li>
+                    <li><strong>添加角色</strong>：从"我的角色"区域拖拽卡片到队伍虚线框中</li>
+                    <li><strong>移除角色</strong>：点击队伍中卡片右上角的移除按钮，或拖拽回"我的角色"区域亦可</li>
+                    <li><strong>清空队伍</strong>：点击右上角"清空当前配队"按钮即可一键清空当前选中的队伍</li>
+                    <li><strong>拖动体验优化</strong>：拖动角色卡片时，将鼠标移动到页面边缘可自动滚动页面，便于长列表操作</li>
                 </ul>
                 
                 <h4>3. 管理角色</h4>
                 <p>浏览你创建的角色以及其强度信息：</p>
                 <ul>
-<li><strong>编辑</strong>：点击角色卡片右上角编辑按钮即可修改角色信息，修改完记得点击按钮保存</li>
+                    <li><strong>编辑</strong>：点击角色卡片右上角编辑按钮即可修改角色信息，修改完记得点击按钮保存</li>
                     <li><strong>删除</strong>：点击删除按钮后确认操作即可删除该卡片</li>
                     <li><strong>隐藏</strong>：点击隐藏按钮即可将卡片移至底部折叠栏</li>
-                    <li><strong>查看评价</strong>：点击卡片下方“角色评价”按钮即可展开/收起评价内容</li>
+                    <li><strong>查看评价</strong>：点击卡片下方"角色评价"按钮即可展开/收起评价内容</li>
                 </ul>
                 
                 <h4>4. 搜索与排序</h4>
@@ -1809,8 +1863,8 @@
                 
                 <h4>5. 数据管理</h4>
                 <ul>
-                    <li><strong>导出数据</strong>：点击“导出数据”按钮，浏览器会自动下载json格式的数据文件（不包括角色图），标注有创建时间</li>
-                    <li><strong>导入数据</strong>：点击“导入数据”按钮，选择正确的json格式文件即可获得数据（不包括角色图），导入前注意备份</li>
+                    <li><strong>导出数据</strong>：点击"导出数据"按钮，浏览器会自动下载json格式的数据文件（不包括角色图），标注有创建时间</li>
+                    <li><strong>导入数据</strong>：点击"导入数据"按钮，选择正确的json格式文件即可获得数据（不包括角色图），导入前注意备份</li>
                     <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动保存到本地，无需点击任何东西</li>
                 </ul>
                 
@@ -1819,8 +1873,8 @@
                 <ul>
                     <li><strong>准备图片</strong>：群内下载FTN工作室提供的标准全角色图压缩包，或百度网盘https://pan.baidu.com/s/1n4iy_olBixNX7lc-CJ8Xbg?pwd=0114</li>
                     <li><strong>导入图片</strong>：可按需求多选图片，推荐按角色本名分批处理更清晰，一次全导入可能出现卡顿/报错问题</li>
-                    <li><strong>匹配图片</strong>：可选所有角色/仅无图片角色来添加角色图片，添加完毕后记得左下角应用更改哦
-                        </ul>
+                    <li><strong>匹配图片</strong>：可选所有角色/仅无图片角色来添加角色图片，添加完毕后记得左下角应用更改哦</li>
+                </ul>
                 
                 <h4>7. 常见问题</h4>
                 <ul>
@@ -1833,7 +1887,7 @@
                 <ul>
                     <li>推荐使用chorme、Edge等稳定浏览器</li>
                     <li>请勿随意修改官方图包，以防数据损坏</li>
-                    <li>本文件夹内所有原始文件版权归“FTN工作室”所有</li>
+                    <li>本文件夹内所有原始文件版权归"FTN工作室"所有</li>
                     <li>本工具无偿分享！严禁二次兜售！违者死全家！</li>
                 </ul>
                 
@@ -1962,6 +2016,25 @@
             selectedImageIndex: null,
             currentFilter: 'all'
         };
+        
+        // 拖拽自动滚动相关状态
+        let dragScrollInterval = null;
+        let dragScrollTimeout = null;
+        let isScrolling = false;
+        let mouseY = 0;
+        
+        // 拖拽自动滚动配置
+        function getScrollConfig() {
+            const isMobile = window.innerWidth < 768;
+            
+            return {
+                edgeThreshold: isMobile ? 450 : 300,
+                delayBeforeScroll: isMobile ? 300 : 150,
+                scrollSpeed: isMobile ? 10 : 8,
+                scrollInterval: isMobile ? 40 : 50,
+                activeZoneHeight: isMobile ? 280 : 400
+            };
+        }
 
         // 初始化应用
         function initApp() {
@@ -1973,6 +2046,9 @@
             
             // 检查必填字段
             checkRequiredFields();
+            
+            // 初始化拖拽自动滚动
+            setupDragAutoScroll();
         }
 
         // 设置事件监听器
@@ -2058,6 +2134,155 @@
             
             // 手动匹配功能
             setupManualMatch();
+        }
+
+        // 设置拖拽自动滚动
+        function setupDragAutoScroll() {
+            // 监听鼠标移动位置
+            document.addEventListener('dragover', function(e) {
+                mouseY = e.clientY;
+            });
+            
+            // 监听所有可拖拽元素
+            document.querySelectorAll('.character-card').forEach(card => {
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+            
+            // 队伍槽位也监听
+            document.querySelectorAll('.team-slot').forEach(slot => {
+                slot.addEventListener('dragstart', handleDragStart);
+                slot.addEventListener('dragend', handleDragEnd);
+            });
+            
+            // 初始化鼠标位置
+            document.addEventListener('mousemove', function(e) {
+                mouseY = e.clientY;
+            });
+        }
+
+        function handleDragStart(e) {
+            // 显示提示信息
+            showMessage('拖动到边缘可自动滚动页面', 'info');
+            startDragMonitoring();
+        }
+
+        function handleDragEnd(e) {
+            // 结束拖拽时停止所有滚动
+            stopDragMonitoring();
+        }
+
+        function startDragMonitoring() {
+            // 清除现有定时器
+            if (dragScrollTimeout) clearTimeout(dragScrollTimeout);
+            if (dragScrollInterval) clearInterval(dragScrollInterval);
+            
+            isScrolling = false;
+            
+            // 隐藏滚动指示器
+            const topIndicator = document.getElementById('topScrollIndicator');
+            const bottomIndicator = document.getElementById('bottomScrollIndicator');
+            if (topIndicator) topIndicator.classList.remove('active');
+            if (bottomIndicator) bottomIndicator.classList.remove('active');
+            
+            // 设置延迟监听器
+            dragScrollTimeout = setTimeout(() => {
+                // 延迟后开始滚动监控
+                startScrollMonitoring();
+            }, getScrollConfig().delayBeforeScroll);
+        }
+
+        function startScrollMonitoring() {
+            if (dragScrollInterval) clearInterval(dragScrollInterval);
+            
+            dragScrollInterval = setInterval(() => {
+                checkAndScroll();
+            }, getScrollConfig().scrollInterval);
+        }
+
+        function checkAndScroll() {
+            const SCROLL_CONFIG = getScrollConfig();
+            const windowHeight = window.innerHeight;
+            const scrollThreshold = SCROLL_CONFIG.edgeThreshold;
+            const activeZone = SCROLL_CONFIG.activeZoneHeight;
+            
+            // 检查鼠标是否在触发区域
+            let shouldScroll = false;
+            let scrollDirection = 0; // -1: 向上, 1: 向下
+            
+            // 获取指示器元素
+            const topIndicator = document.getElementById('topScrollIndicator');
+            const bottomIndicator = document.getElementById('bottomScrollIndicator');
+            
+            if (mouseY < scrollThreshold) {
+                // 鼠标在顶部附近
+                shouldScroll = true;
+                scrollDirection = -1;
+                // 显示顶部指示器
+                if (topIndicator) topIndicator.classList.add('active');
+                if (bottomIndicator) bottomIndicator.classList.remove('active');
+            } else if (mouseY > windowHeight - scrollThreshold) {
+                // 鼠标在底部附近
+                shouldScroll = true;
+                scrollDirection = 1;
+                // 显示底部指示器
+                if (bottomIndicator) bottomIndicator.classList.add('active');
+                if (topIndicator) topIndicator.classList.remove('active');
+            } else {
+                // 隐藏指示器
+                if (topIndicator) topIndicator.classList.remove('active');
+                if (bottomIndicator) bottomIndicator.classList.remove('active');
+            }
+            
+            // 如果在活跃区域但不是边缘，使用更慢的速度
+            let currentScrollSpeed = SCROLL_CONFIG.scrollSpeed;
+            
+            // 根据距离边缘的远近调整速度
+            if (mouseY < activeZone) {
+                currentScrollSpeed = Math.max(3, (activeZone - mouseY) / 10);
+                scrollDirection = -1;
+                shouldScroll = true;
+                if (topIndicator) topIndicator.classList.add('active');
+            } else if (mouseY > windowHeight - activeZone) {
+                currentScrollSpeed = Math.max(3, (mouseY - (windowHeight - activeZone)) / 10);
+                scrollDirection = 1;
+                shouldScroll = true;
+                if (bottomIndicator) bottomIndicator.classList.add('active');
+            }
+            
+            // 执行滚动
+            if (shouldScroll) {
+                isScrolling = true;
+                const scrollAmount = currentScrollSpeed * scrollDirection;
+                
+                // 平滑滚动
+                window.scrollBy({
+                    top: scrollAmount,
+                    behavior: 'auto'
+                });
+            } else {
+                isScrolling = false;
+            }
+        }
+
+        function stopDragMonitoring() {
+            if (dragScrollTimeout) {
+                clearTimeout(dragScrollTimeout);
+                dragScrollTimeout = null;
+            }
+            
+            if (dragScrollInterval) {
+                clearInterval(dragScrollInterval);
+                dragScrollInterval = null;
+            }
+            
+            isScrolling = false;
+            
+            // 隐藏滚动指示器
+            const topIndicator = document.getElementById('topScrollIndicator');
+            const bottomIndicator = document.getElementById('bottomScrollIndicator');
+            if (topIndicator) topIndicator.classList.remove('active');
+            if (bottomIndicator) bottomIndicator.classList.remove('active');
         }
 
         // 设置数据管理事件监听器
@@ -2985,6 +3210,7 @@
             // 卡片拖拽
             container.querySelectorAll('.character-card').forEach(card => {
                 card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
             });
         }
 
@@ -3075,6 +3301,7 @@
                     if (card) {
                         card.draggable = true;
                         card.addEventListener('dragstart', handleDragStart);
+                        card.addEventListener('dragend', handleDragEnd);
                         
                         // 修改操作按钮（只能移除）
                         const actions = card.querySelector('.card-actions');
@@ -3227,7 +3454,7 @@
                 teams: state.teams,
                 currentTeam: state.currentTeam,
                 exportDate: new Date().toISOString(),
-                version: '1.5.0',
+                version: '1.6.0',
                 appName: '欲神幻想梯度榜',
                 exportNote: '使用"导入数据"功能可以恢复此文件中的数据'
             };
