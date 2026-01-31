@@ -1116,6 +1116,9 @@
         .card-content {
             padding: 12px; /* 原15px * 0.85 = 12.75px，取12px */
             position: relative;
+            height: calc(357px - 221px); /* 计算剩余高度 */
+            display: flex;
+            flex-direction: column;
         }
 
         .card-name {
@@ -1126,6 +1129,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            flex-shrink: 0;
         }
 
         .card-stars {
@@ -1133,6 +1137,7 @@
             flex-wrap: wrap;
             margin-bottom: 8px; /* 原10px * 0.85 = 8.5px，取8px */
             gap: 2px;
+            flex-shrink: 0;
         }
 
         .star-icon {
@@ -1149,6 +1154,7 @@
             justify-content: space-between;
             margin-bottom: 8px; /* 原10px * 0.85 = 8.5px，取8px */
             font-size: 0.95rem; /* 保持原大小 */
+            flex-shrink: 0;
         }
 
         .pve-score {
@@ -1159,21 +1165,25 @@
             color: var(--light-purple);
         }
 
+        /* 修正角色评价按钮 - 使其不超出卡片框 */
         .card-review-toggle {
             background: rgba(250, 103, 178, 0.1);
             border: none;
             color: var(--light-purple);
-            padding: 8px 12px; /* 保持原大小 */
-            border-radius: 8px;
+            padding: 6px 10px; /* 减小内边距 */
+            border-radius: 6px; /* 减小圆角 */
             width: 100%;
             cursor: pointer;
-            font-size: 0.9rem; /* 保持原大小 */
+            font-size: 0.85rem; /* 减小字体 */
             transition: all 0.3s;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 5;
             position: relative;
+            margin-top: auto; /* 推到底部 */
+            flex-shrink: 0;
+            min-height: 32px; /* 设置最小高度确保一致性 */
         }
 
         .card-review-toggle:hover {
@@ -1616,7 +1626,7 @@
         <img src="./images/picture1.png" alt="左装饰图" class="header-img left glow-effect">
         <div class="header-title">
             <h1 class="main-title breathe-effect">欲神幻想梯度榜</h1>
-            <p class="subtitle">FTN工作室出品·高度自定义设计</p>
+            <p class="subtitle">FTN工作室出品·IndexedDB大容量存储版</p>
         </div>
         <img src="./images/picture2.png" alt="右装饰图" class="header-img right glow-effect">
     </div>
@@ -1634,6 +1644,9 @@
         </button>
         <button id="showTutorialBtn" class="data-btn tutorial">
             <i class="fas fa-book"></i> 使用教程
+        </button>
+        <button id="clearAllDataBtn" class="data-btn" style="background: linear-gradient(90deg, #ef4444, #dc2626);">
+            <i class="fas fa-trash-alt"></i> 清空所有数据
         </button>
         <input type="file" id="importFileInput" class="import-file-input" accept=".json">
         <input type="file" id="importOfficialImagesInput" class="import-file-input" accept="image/*" multiple>
@@ -1802,7 +1815,7 @@
 
     <!-- 页脚 -->
     <footer>
-        欲神幻想梯度榜 v1.6 · FTN工作室出品 · 优化角色卡片拖动体验
+        欲神幻想梯度榜 v2.0 · FTN工作室出品 · IndexedDB大容量存储版
     </footer>
 
     <!-- 教程模态框 -->
@@ -1813,9 +1826,19 @@
                 <button class="tutorial-modal-close">&times;</button>
             </div>
             <div class="tutorial-modal-body" id="tutorialContent">
-                <h3>欢迎使用欲神幻想梯度榜</h3>
-                <p>本工具由FTN工作室开发，为广大玩家提供便利的角色强度整理及配队模拟。</p>
+                <h3>欢迎使用欲神幻想梯度榜 v2.0</h3>
+                <p>本工具由FTN工作室开发，现已升级为IndexedDB存储，支持超大容量数据存储，解决之前数据量过大导致的问题。</p>
                 
+                <h3>主要更新</h3>
+                <ul>
+                    <li><strong>IndexedDB存储</strong>：支持存储数千个角色卡片，不再受localStorage 5MB限制</li>
+                    <li><strong>数据自动迁移</strong>：首次打开新版本会自动迁移旧版数据到IndexedDB</li>
+                    <li><strong>旧版数据抢救</strong>：可导入旧版超大JSON文件，数据将迁移到IndexedDB</li>
+                    <li><strong>图片分离存储</strong>：图片和文字信息分离存储，优化性能</li>
+                    <li><strong>UI优化</strong>：调整角色评价按钮，修复超出卡片框的问题</li>
+                </ul>
+                
+                <!-- 原有教程内容保持不变 -->
                 <h3>主要功能</h3>
                 <ul>
                     <li><strong>创建角色</strong>：添加角色，设置突破星级、PVE/PVP评分、评价</li>
@@ -1865,7 +1888,7 @@
                 <ul>
                     <li><strong>导出数据</strong>：点击"导出数据"按钮，浏览器会自动下载json格式的数据文件（不包括角色图），标注有创建时间</li>
                     <li><strong>导入数据</strong>：点击"导入数据"按钮，选择正确的json格式文件即可获得数据（不包括角色图），导入前注意备份</li>
-                    <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动保存到本地，无需点击任何东西</li>
+                    <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动保存到IndexedDB，无需点击任何东西</li>
                 </ul>
                 
                 <h4>6. 批量导入角色图片（手动匹配）</h4>
@@ -2008,6 +2031,20 @@
         // 默认图片路径
         const DEFAULT_IMAGE_PATH = './images/normal.png';
         
+        // IndexedDB 配置
+        const DB_NAME = 'yshx_character_db';
+        const DB_VERSION = 2; // 版本2：添加图片分离存储
+        const STORES = {
+            CHARACTERS: 'characters',
+            IMAGES: 'images',
+            TEAMS: 'teams',
+            APP_STATE: 'app_state'
+        };
+
+        // IndexedDB 实例
+        let db = null;
+        let isDbInitialized = false;
+
         // 图片匹配相关状态
         const matchState = {
             currentImageFiles: [],
@@ -2037,18 +2074,417 @@
         }
 
         // 初始化应用
-        function initApp() {
-            loadFromLocalStorage();
-            setupEventListeners();
-            renderCharacters();
-            updateHiddenCount();
-            renderTeams();
-            
-            // 检查必填字段
-            checkRequiredFields();
-            
-            // 初始化拖拽自动滚动
-            setupDragAutoScroll();
+        async function initApp() {
+            try {
+                // 初始化IndexedDB
+                await initIndexedDB();
+                
+                // 加载数据
+                await loadAllData();
+                
+                // 检查是否需要从localStorage迁移数据
+                await checkAndMigrateFromLocalStorage();
+                
+                // 设置事件监听器
+                setupEventListeners();
+                
+                // 渲染UI
+                renderCharacters();
+                updateHiddenCount();
+                renderTeams();
+                
+                // 检查必填字段
+                checkRequiredFields();
+                
+                // 初始化拖拽自动滚动
+                setupDragAutoScroll();
+                
+                console.log('应用初始化完成，使用IndexedDB存储');
+            } catch (error) {
+                console.error('初始化应用失败:', error);
+                showMessage('应用初始化失败，请刷新页面重试', 'error');
+            }
+        }
+
+        // 初始化IndexedDB
+        function initIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                
+                request.onerror = function(event) {
+                    console.error('IndexedDB打开失败:', event.target.error);
+                    reject(event.target.error);
+                };
+                
+                request.onsuccess = function(event) {
+                    db = event.target.result;
+                    isDbInitialized = true;
+                    console.log('IndexedDB初始化成功');
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    
+                    // 创建字符信息存储
+                    if (!db.objectStoreNames.contains(STORES.CHARACTERS)) {
+                        const characterStore = db.createObjectStore(STORES.CHARACTERS, { keyPath: 'id' });
+                        characterStore.createIndex('hidden', 'hidden', { unique: false });
+                    }
+                    
+                    // 创建图片存储
+                    if (!db.objectStoreNames.contains(STORES.IMAGES)) {
+                        db.createObjectStore(STORES.IMAGES, { keyPath: 'characterId' });
+                    }
+                    
+                    // 创建队伍存储
+                    if (!db.objectStoreNames.contains(STORES.TEAMS)) {
+                        db.createObjectStore(STORES.TEAMS, { keyPath: 'teamIndex' });
+                    }
+                    
+                    // 创建应用状态存储
+                    if (!db.objectStoreNames.contains(STORES.APP_STATE)) {
+                        db.createObjectStore(STORES.APP_STATE, { keyPath: 'key' });
+                    }
+                    
+                    console.log('IndexedDB对象存储创建成功');
+                };
+            });
+        }
+
+        // 检查并迁移localStorage数据
+        async function checkAndMigrateFromLocalStorage() {
+            try {
+                const saved = localStorage.getItem('yshx-character-data');
+                if (!saved) {
+                    console.log('没有发现localStorage数据需要迁移');
+                    return;
+                }
+                
+                // 检查IndexedDB是否已有数据
+                const characters = await getAllCharacters();
+                if (characters.length > 0) {
+                    console.log('IndexedDB已有数据，跳过localStorage迁移');
+                    return;
+                }
+                
+                console.log('发现localStorage数据，开始迁移...');
+                showMessage('检测到旧版数据，正在迁移到IndexedDB...', 'info');
+                
+                const data = JSON.parse(saved);
+                
+                if (data.characters && data.characters.length > 0) {
+                    console.log(`发现 ${data.characters.length} 个角色数据需要迁移`);
+                    
+                    // 迁移角色数据
+                    for (const character of data.characters) {
+                        // 分离图片数据
+                        let imageData = null;
+                        if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
+                            imageData = {
+                                characterId: character.id,
+                                dataUrl: character.image
+                            };
+                            // 从角色对象中移除图片数据，只保存图片ID引用
+                            character.hasImage = true;
+                        }
+                        
+                        // 保存角色信息（不包含图片数据）
+                        await saveCharacter(character);
+                        
+                        // 保存图片数据到单独存储
+                        if (imageData) {
+                            await saveImage(imageData);
+                        }
+                    }
+                    
+                    console.log('角色数据迁移完成');
+                }
+                
+                if (data.hiddenCharacters && data.hiddenCharacters.length > 0) {
+                    console.log(`发现 ${data.hiddenCharacters.length} 个隐藏角色数据需要迁移`);
+                    
+                    for (const character of data.hiddenCharacters) {
+                        // 分离图片数据
+                        let imageData = null;
+                        if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
+                            imageData = {
+                                characterId: character.id,
+                                dataUrl: character.image
+                            };
+                            character.hasImage = true;
+                        }
+                        
+                        await saveCharacter(character);
+                        
+                        if (imageData) {
+                            await saveImage(imageData);
+                        }
+                    }
+                    
+                    console.log('隐藏角色数据迁移完成');
+                }
+                
+                if (data.teams) {
+                    for (let i = 0; i < data.teams.length; i++) {
+                        if (data.teams[i] && data.teams[i].length > 0) {
+                            await saveTeam(i + 1, data.teams[i]);
+                        }
+                    }
+                    console.log('队伍数据迁移完成');
+                }
+                
+                if (data.currentTeam) {
+                    await saveAppState('currentTeam', data.currentTeam);
+                    console.log('应用状态迁移完成');
+                }
+                
+                // 迁移完成后清空localStorage
+                localStorage.removeItem('yshx-character-data');
+                
+                showMessage('旧版数据迁移完成！共迁移了 ' + 
+                    ((data.characters?.length || 0) + (data.hiddenCharacters?.length || 0)) + 
+                    ' 个角色', 'success');
+                    
+                // 重新加载数据
+                await loadAllData();
+                
+            } catch (error) {
+                console.error('数据迁移失败:', error);
+                showMessage('数据迁移失败，但应用可以继续使用', 'warning');
+            }
+        }
+
+        // 从IndexedDB加载所有数据
+        async function loadAllData() {
+            try {
+                // 重置状态
+                state.characters = [];
+                state.hiddenCharacters = [];
+                state.teams = [[], [], [], []];
+                
+                // 加载所有角色
+                const allCharacters = await getAllCharacters();
+                
+                // 分离普通角色和隐藏角色
+                for (const character of allCharacters) {
+                    // 获取角色图片
+                    const imageData = await getImage(character.id);
+                    if (imageData) {
+                        character.image = imageData.dataUrl;
+                    } else {
+                        character.image = DEFAULT_IMAGE_PATH;
+                    }
+                    
+                    if (character.hidden) {
+                        state.hiddenCharacters.push(character);
+                    } else {
+                        state.characters.push(character);
+                    }
+                }
+                
+                // 加载队伍数据
+                for (let i = 1; i <= 4; i++) {
+                    const team = await getTeam(i);
+                    if (team && team.characterIds) {
+                        state.teams[i-1] = team.characterIds;
+                    }
+                }
+                
+                // 加载应用状态
+                const currentTeam = await getAppState('currentTeam');
+                if (currentTeam) {
+                    state.currentTeam = currentTeam;
+                }
+                
+                console.log(`数据加载完成: ${state.characters.length}个角色, ${state.hiddenCharacters.length}个隐藏角色`);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                throw error;
+            }
+        }
+
+        // IndexedDB CRUD 操作
+        // 保存角色
+        function saveCharacter(character) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.CHARACTERS], 'readwrite');
+                const store = transaction.objectStore(STORES.CHARACTERS);
+                
+                // 确保不保存图片数据到字符存储
+                const characterToSave = { ...character };
+                if (characterToSave.image) {
+                    delete characterToSave.image;
+                }
+                
+                const request = store.put(characterToSave);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 获取所有角色
+        function getAllCharacters() {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.CHARACTERS], 'readonly');
+                const store = transaction.objectStore(STORES.CHARACTERS);
+                const request = store.getAll();
+                
+                request.onsuccess = () => resolve(request.result || []);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 获取单个角色
+        function getCharacter(id) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.CHARACTERS], 'readonly');
+                const store = transaction.objectStore(STORES.CHARACTERS);
+                const request = store.get(id);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 删除角色
+        function deleteCharacterFromDB(id) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.CHARACTERS, STORES.IMAGES], 'readwrite');
+                const characterStore = transaction.objectStore(STORES.CHARACTERS);
+                const imageStore = transaction.objectStore(STORES.IMAGES);
+                
+                // 删除角色信息
+                characterStore.delete(id);
+                // 删除对应的图片
+                imageStore.delete(id);
+                
+                transaction.oncomplete = () => resolve();
+                transaction.onerror = () => reject(transaction.error);
+            });
+        }
+
+        // 保存图片
+        function saveImage(imageData) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.IMAGES], 'readwrite');
+                const store = transaction.objectStore(STORES.IMAGES);
+                const request = store.put(imageData);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 获取图片
+        function getImage(characterId) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.IMAGES], 'readonly');
+                const store = transaction.objectStore(STORES.IMAGES);
+                const request = store.get(characterId);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 保存队伍
+        function saveTeam(teamIndex, characterIds) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                const store = transaction.objectStore(STORES.TEAMS);
+                const request = store.put({ teamIndex, characterIds });
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 获取队伍
+        function getTeam(teamIndex) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.TEAMS], 'readonly');
+                const store = transaction.objectStore(STORES.TEAMS);
+                const request = store.get(teamIndex);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 保存应用状态
+        function saveAppState(key, value) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.APP_STATE], 'readwrite');
+                const store = transaction.objectStore(STORES.APP_STATE);
+                const request = store.put({ key, value });
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // 获取应用状态
+        function getAppState(key) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('数据库未初始化'));
+                    return;
+                }
+                
+                const transaction = db.transaction([STORES.APP_STATE], 'readonly');
+                const store = transaction.objectStore(STORES.APP_STATE);
+                const request = store.get(key);
+                
+                request.onsuccess = () => resolve(request.result ? request.result.value : null);
+                request.onerror = () => reject(request.error);
+            });
         }
 
         // 设置事件监听器
@@ -2134,6 +2570,9 @@
             
             // 手动匹配功能
             setupManualMatch();
+            
+            // 清空所有数据按钮
+            document.getElementById('clearAllDataBtn').addEventListener('click', clearAllData);
         }
 
         // 设置拖拽自动滚动
@@ -2364,6 +2803,58 @@
             document.getElementById('confirmImageSelect').addEventListener('click', confirmImageSelection);
         }
 
+        // 清空所有数据
+        async function clearAllData() {
+            if (!confirm('警告：这将永久删除所有角色数据、图片和队伍配置，确定要继续吗？')) {
+                return;
+            }
+            
+            try {
+                showProcessing('正在清空所有数据...', '请稍候');
+                
+                // 清空IndexedDB
+                const transaction = db.transaction(
+                    [STORES.CHARACTERS, STORES.IMAGES, STORES.TEAMS, STORES.APP_STATE], 
+                    'readwrite'
+                );
+                
+                transaction.objectStore(STORES.CHARACTERS).clear();
+                transaction.objectStore(STORES.IMAGES).clear();
+                transaction.objectStore(STORES.TEAMS).clear();
+                transaction.objectStore(STORES.APP_STATE).clear();
+                
+                await new Promise((resolve, reject) => {
+                    transaction.oncomplete = resolve;
+                    transaction.onerror = () => reject(transaction.error);
+                });
+                
+                // 重置应用状态
+                state.characters = [];
+                state.hiddenCharacters = [];
+                state.teams = [[], [], [], []];
+                state.currentTeam = 1;
+                state.editingCharacterId = null;
+                state.currentSort = null;
+                state.sortDirection = 'desc';
+                
+                // 清空localStorage（如果有残留）
+                localStorage.removeItem('yshx-character-data');
+                
+                // 更新UI
+                renderCharacters();
+                updateHiddenCharacters();
+                renderTeams();
+                updateHiddenCount();
+                
+                hideProcessing();
+                showMessage('所有数据已清空', 'success');
+            } catch (error) {
+                hideProcessing();
+                console.error('清空数据失败:', error);
+                showMessage('清空数据失败，请重试', 'error');
+            }
+        }
+
         // 显示教程
         function showTutorial() {
             document.getElementById('tutorialModal').classList.add('show');
@@ -2534,7 +3025,7 @@
         }
 
         // 渲染角色匹配列表
-        function renderCharacterMatchList() {
+        async function renderCharacterMatchList() {
             const container = document.getElementById('characterMatchList');
             const countElement = document.getElementById('characterCount');
             
@@ -2606,7 +3097,7 @@
         }
 
         // 渲染图片匹配列表
-        function renderImageMatchList() {
+        async function renderImageMatchList() {
             const container = document.getElementById('imageMatchList');
             const countElement = document.getElementById('imageCount');
             
@@ -2619,26 +3110,26 @@
                 container.innerHTML = '<div style="color: var(--light-purple); text-align: center; padding: 20px;">正在加载图片...</div>';
                 
                 // 异步加载所有图片
-                loadAllImages().then(() => {
-                    // 生成图片列表
-                    container.innerHTML = matchState.currentImageFiles.map((imageData, index) => {
-                        const isSelected = matchState.selectedImageIndex === index;
-                        return `
-                            <div class="image-match-item ${isSelected ? 'selected' : ''}" data-index="${index}">
-                                <div class="image-match-preview">
-                                    <img src="${imageData.dataUrl}" alt="${imageData.name}">
-                                </div>
-                                <div class="image-match-name">${imageData.name}</div>
+                await loadAllImages();
+                
+                // 生成图片列表
+                container.innerHTML = matchState.currentImageFiles.map((imageData, index) => {
+                    const isSelected = matchState.selectedImageIndex === index;
+                    return `
+                        <div class="image-match-item ${isSelected ? 'selected' : ''}" data-index="${index}">
+                            <div class="image-match-preview">
+                                <img src="${imageData.dataUrl}" alt="${imageData.name}">
                             </div>
-                        `;
-                    }).join('');
-                    
-                    // 添加事件监听器
-                    container.querySelectorAll('.image-match-item').forEach(item => {
-                        item.addEventListener('click', function() {
-                            const index = parseInt(this.dataset.index);
-                            selectImageForMatch(index);
-                        });
+                            <div class="image-match-name">${imageData.name}</div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // 添加事件监听器
+                container.querySelectorAll('.image-match-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        selectImageForMatch(index);
                     });
                 });
             } else {
@@ -2761,42 +3252,66 @@
         }
 
         // 应用角色匹配
-        function applyCharacterMatches() {
+        async function applyCharacterMatches() {
             if (matchState.characterMatches.size === 0) {
                 showMessage('没有进行任何匹配', 'warning');
                 return;
             }
             
-            let updatedCount = 0;
+            showProcessing('正在更新角色图片...', `处理 ${matchState.characterMatches.size} 个角色`);
             
-            // 更新普通角色
-            state.characters.forEach(character => {
-                if (matchState.characterMatches.has(character.id)) {
-                    const imageData = matchState.characterMatches.get(character.id);
-                    character.image = imageData.dataUrl;
-                    updatedCount++;
+            try {
+                let updatedCount = 0;
+                
+                // 更新普通角色
+                for (const character of state.characters) {
+                    if (matchState.characterMatches.has(character.id)) {
+                        const imageData = matchState.characterMatches.get(character.id);
+                        
+                        // 更新内存中的图片
+                        character.image = imageData.dataUrl;
+                        
+                        // 保存到IndexedDB
+                        await saveImage({
+                            characterId: character.id,
+                            dataUrl: imageData.dataUrl
+                        });
+                        
+                        updatedCount++;
+                    }
                 }
-            });
-            
-            // 更新隐藏角色
-            state.hiddenCharacters.forEach(character => {
-                if (matchState.characterMatches.has(character.id)) {
-                    const imageData = matchState.characterMatches.get(character.id);
-                    character.image = imageData.dataUrl;
-                    updatedCount++;
+                
+                // 更新隐藏角色
+                for (const character of state.hiddenCharacters) {
+                    if (matchState.characterMatches.has(character.id)) {
+                        const imageData = matchState.characterMatches.get(character.id);
+                        
+                        character.image = imageData.dataUrl;
+                        
+                        await saveImage({
+                            characterId: character.id,
+                            dataUrl: imageData.dataUrl
+                        });
+                        
+                        updatedCount++;
+                    }
                 }
-            });
-            
-            // 更新显示和存储
-            renderCharacters();
-            updateHiddenCharacters();
-            renderTeams();
-            saveToLocalStorage();
-            
-            // 隐藏匹配界面
-            hideManualMatch();
-            
-            showMessage(`成功为 ${updatedCount} 个角色更新了图片`);
+                
+                // 更新显示
+                renderCharacters();
+                updateHiddenCharacters();
+                renderTeams();
+                
+                // 隐藏匹配界面
+                hideManualMatch();
+                
+                hideProcessing();
+                showMessage(`成功为 ${updatedCount} 个角色更新了图片`);
+            } catch (error) {
+                hideProcessing();
+                console.error('更新图片失败:', error);
+                showMessage('更新图片失败，请重试', 'error');
+            }
         }
 
         // 设置事件委托
@@ -2936,67 +3451,96 @@
         }
 
         // 创建或更新角色
-        function createOrUpdateCharacter() {
-            const id = state.editingCharacterId || Date.now().toString();
-            const name = document.getElementById('characterName').value.trim();
-            const stars = parseInt(document.getElementById('characterStars').value);
-            const pve = parseInt(document.getElementById('characterPve').value);
-            const pvp = parseInt(document.getElementById('characterPvp').value);
-            const review = document.getElementById('characterReview').value.trim();
-            const imagePreview = document.getElementById('imagePreview');
-            
-            // 如果没有上传图片，使用默认图片
-            let characterImage = DEFAULT_IMAGE_PATH;
-            if (imagePreview.style.display === 'block' && imagePreview.src) {
-                characterImage = imagePreview.src;
-            }
-            
-            // 如果是编辑模式，保留原图（如果没有上传新图）
-            if (state.editingCharacterId && !imagePreview.src) {
-                const oldChar = state.characters.find(c => c.id === state.editingCharacterId) ||
-                               state.hiddenCharacters.find(c => c.id === state.editingCharacterId);
-                if (oldChar) characterImage = oldChar.image;
-            }
-            
-            const character = {
-                id,
-                name,
-                stars,
-                pve,
-                pvp,
-                review,
-                image: characterImage,
-                hidden: false
-            };
-            
-            if (state.editingCharacterId) {
-                // 更新现有角色
-                const index = state.characters.findIndex(c => c.id === state.editingCharacterId);
-                const hiddenIndex = state.hiddenCharacters.findIndex(c => c.id === state.editingCharacterId);
+        async function createOrUpdateCharacter() {
+            try {
+                const id = state.editingCharacterId || Date.now().toString();
+                const name = document.getElementById('characterName').value.trim();
+                const stars = parseInt(document.getElementById('characterStars').value);
+                const pve = parseInt(document.getElementById('characterPve').value);
+                const pvp = parseInt(document.getElementById('characterPvp').value);
+                const review = document.getElementById('characterReview').value.trim();
+                const imagePreview = document.getElementById('imagePreview');
                 
-                if (index !== -1) {
-                    state.characters[index] = character;
-                } else if (hiddenIndex !== -1) {
-                    state.hiddenCharacters[hiddenIndex] = character;
+                // 角色对象（不包含图片数据）
+                const character = {
+                    id,
+                    name,
+                    stars,
+                    pve,
+                    pvp,
+                    review,
+                    hidden: false
+                };
+                
+                // 图片数据
+                let imageData = null;
+                if (imagePreview.style.display === 'block' && imagePreview.src) {
+                    imageData = {
+                        characterId: id,
+                        dataUrl: imagePreview.src
+                    };
                 }
                 
-                state.editingCharacterId = null;
-                document.getElementById('createButton').textContent = '创建角色';
-                showMessage('角色修改成功');
-            } else {
-                // 添加新角色
-                state.characters.push(character);
-                showMessage('角色创建成功');
+                if (state.editingCharacterId) {
+                    // 更新现有角色
+                    await saveCharacter(character);
+                    
+                    // 更新图片
+                    if (imageData) {
+                        await saveImage(imageData);
+                    } else if (imagePreview.src === '') {
+                        // 如果清空了图片，删除图片数据
+                        const transaction = db.transaction([STORES.IMAGES], 'readwrite');
+                        const store = transaction.objectStore(STORES.IMAGES);
+                        store.delete(id);
+                    }
+                    
+                    // 更新内存中的数据
+                    const charIndex = state.characters.findIndex(c => c.id === id);
+                    const hiddenIndex = state.hiddenCharacters.findIndex(c => c.id === id);
+                    
+                    if (charIndex !== -1) {
+                        const updatedChar = { ...state.characters[charIndex], ...character };
+                        updatedChar.image = imageData ? imageData.dataUrl : DEFAULT_IMAGE_PATH;
+                        state.characters[charIndex] = updatedChar;
+                    } else if (hiddenIndex !== -1) {
+                        const updatedChar = { ...state.hiddenCharacters[hiddenIndex], ...character };
+                        updatedChar.image = imageData ? imageData.dataUrl : DEFAULT_IMAGE_PATH;
+                        state.hiddenCharacters[hiddenIndex] = updatedChar;
+                    }
+                    
+                    state.editingCharacterId = null;
+                    document.getElementById('createButton').textContent = '创建角色';
+                    showMessage('角色修改成功');
+                } else {
+                    // 添加新角色
+                    await saveCharacter(character);
+                    
+                    // 保存图片
+                    if (imageData) {
+                        await saveImage(imageData);
+                    }
+                    
+                    // 添加到内存
+                    const newCharacter = { ...character };
+                    newCharacter.image = imageData ? imageData.dataUrl : DEFAULT_IMAGE_PATH;
+                    state.characters.push(newCharacter);
+                    
+                    showMessage('角色创建成功');
+                }
+                
+                // 清空表单
+                clearForm();
+                
+                // 更新显示
+                renderCharacters();
+                updateHiddenCharacters();
+                updateHiddenCount();
+                
+            } catch (error) {
+                console.error('创建/更新角色失败:', error);
+                showMessage('操作失败，请重试', 'error');
             }
-            
-            // 清空表单
-            clearForm();
-            
-            // 更新显示和存储
-            renderCharacters();
-            updateHiddenCharacters();
-            saveToLocalStorage();
-            updateHiddenCount();
         }
 
         // 清空表单
@@ -3019,91 +3563,139 @@
         }
 
         // 编辑角色
-        function editCharacter(id) {
-            const character = state.characters.find(c => c.id === id) || 
-                            state.hiddenCharacters.find(c => c.id === id);
-            
-            if (!character) return;
-            
-            document.getElementById('characterName').value = character.name;
-            document.getElementById('characterStars').value = character.stars;
-            document.getElementById('characterPve').value = character.pve;
-            document.getElementById('characterPvp').value = character.pvp;
-            document.getElementById('characterReview').value = character.review || '';
-            
-            if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
-                const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = character.image;
-                imagePreview.style.display = 'block';
-            } else {
-                const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = '';
-                imagePreview.style.display = 'none';
+        async function editCharacter(id) {
+            try {
+                const character = await getCharacter(id);
+                if (!character) return;
+                
+                // 获取图片
+                const imageData = await getImage(id);
+                
+                document.getElementById('characterName').value = character.name;
+                document.getElementById('characterStars').value = character.stars;
+                document.getElementById('characterPve').value = character.pve;
+                document.getElementById('characterPvp').value = character.pvp;
+                document.getElementById('characterReview').value = character.review || '';
+                
+                if (imageData) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.src = imageData.dataUrl;
+                    imagePreview.style.display = 'block';
+                } else {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.src = '';
+                    imagePreview.style.display = 'none';
+                }
+                
+                state.editingCharacterId = id;
+                document.getElementById('createButton').textContent = '修改角色';
+                checkRequiredFields();
+                
+                // 滚动到表单
+                document.querySelector('.section-container').scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error('编辑角色失败:', error);
+                showMessage('加载角色信息失败', 'error');
             }
-            
-            state.editingCharacterId = id;
-            document.getElementById('createButton').textContent = '修改角色';
-            checkRequiredFields();
-            
-            // 滚动到表单
-            document.querySelector('.section-container').scrollIntoView({ behavior: 'smooth' });
         }
 
         // 删除角色
-        function deleteCharacter(id) {
+        async function deleteCharacter(id) {
             if (!confirm('确定要删除这个角色吗？')) return;
             
-            // 从角色列表中删除
-            state.characters = state.characters.filter(c => c.id !== id);
-            state.hiddenCharacters = state.hiddenCharacters.filter(c => c.id !== id);
-            
-            // 从所有队伍中删除
-            for (let i = 0; i < state.teams.length; i++) {
-                state.teams[i] = state.teams[i].filter(charId => charId !== id);
+            try {
+                // 从IndexedDB删除
+                await deleteCharacterFromDB(id);
+                
+                // 从角色列表中删除
+                state.characters = state.characters.filter(c => c.id !== id);
+                state.hiddenCharacters = state.hiddenCharacters.filter(c => c.id !== id);
+                
+                // 从所有队伍中删除
+                for (let i = 0; i < state.teams.length; i++) {
+                    state.teams[i] = state.teams[i].filter(charId => charId !== id);
+                }
+                
+                // 保存队伍更新
+                for (let i = 0; i < state.teams.length; i++) {
+                    if (state.teams[i].length > 0) {
+                        await saveTeam(i + 1, state.teams[i]);
+                    } else {
+                        // 如果队伍为空，从IndexedDB删除
+                        const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                        const store = transaction.objectStore(STORES.TEAMS);
+                        store.delete(i + 1);
+                    }
+                }
+                
+                // 更新显示
+                renderCharacters();
+                updateHiddenCharacters();
+                renderTeams();
+                updateHiddenCount();
+                
+                showMessage('角色删除成功');
+            } catch (error) {
+                console.error('删除角色失败:', error);
+                showMessage('删除角色失败，请重试', 'error');
             }
-            
-            // 更新显示和存储
-            renderCharacters();
-            updateHiddenCharacters();
-            renderTeams();
-            saveToLocalStorage();
-            updateHiddenCount();
-            
-            showMessage('角色删除成功');
         }
 
         // 隐藏/显示角色
-        function toggleCharacterHidden(id) {
-            const charIndex = state.characters.findIndex(c => c.id === id);
-            const hiddenIndex = state.hiddenCharacters.findIndex(c => c.id === id);
-            
-            if (charIndex !== -1) {
-                // 从正常列表移到隐藏列表
-                const character = state.characters[charIndex];
-                character.hidden = true;
-                state.hiddenCharacters.push(character);
-                state.characters.splice(charIndex, 1);
-                showMessage('角色已隐藏');
-            } else if (hiddenIndex !== -1) {
-                // 从隐藏列表移到正常列表
-                const character = state.hiddenCharacters[hiddenIndex];
-                character.hidden = false;
-                state.characters.push(character);
-                state.hiddenCharacters.splice(hiddenIndex, 1);
-                showMessage('角色已恢复显示');
+        async function toggleCharacterHidden(id) {
+            try {
+                const charIndex = state.characters.findIndex(c => c.id === id);
+                const hiddenIndex = state.hiddenCharacters.findIndex(c => c.id === id);
+                
+                if (charIndex !== -1) {
+                    // 从正常列表移到隐藏列表
+                    const character = state.characters[charIndex];
+                    character.hidden = true;
+                    
+                    // 更新到IndexedDB
+                    await saveCharacter(character);
+                    
+                    state.hiddenCharacters.push(character);
+                    state.characters.splice(charIndex, 1);
+                    showMessage('角色已隐藏');
+                } else if (hiddenIndex !== -1) {
+                    // 从隐藏列表移到正常列表
+                    const character = state.hiddenCharacters[hiddenIndex];
+                    character.hidden = false;
+                    
+                    // 更新到IndexedDB
+                    await saveCharacter(character);
+                    
+                    state.characters.push(character);
+                    state.hiddenCharacters.splice(hiddenIndex, 1);
+                    showMessage('角色已恢复显示');
+                }
+                
+                // 从所有队伍中删除
+                for (let i = 0; i < state.teams.length; i++) {
+                    state.teams[i] = state.teams[i].filter(charId => charId !== id);
+                }
+                
+                // 保存队伍更新
+                for (let i = 0; i < state.teams.length; i++) {
+                    if (state.teams[i].length > 0) {
+                        await saveTeam(i + 1, state.teams[i]);
+                    } else {
+                        const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                        const store = transaction.objectStore(STORES.TEAMS);
+                        store.delete(i + 1);
+                    }
+                }
+                
+                // 更新显示
+                renderCharacters();
+                updateHiddenCharacters();
+                renderTeams();
+                updateHiddenCount();
+            } catch (error) {
+                console.error('切换角色隐藏状态失败:', error);
+                showMessage('操作失败，请重试', 'error');
             }
-            
-            // 从所有队伍中删除
-            for (let i = 0; i < state.teams.length; i++) {
-                state.teams[i] = state.teams[i].filter(charId => charId !== id);
-            }
-            
-            // 更新显示和存储
-            renderCharacters();
-            updateHiddenCharacters();
-            renderTeams();
-            saveToLocalStorage();
-            updateHiddenCount();
         }
 
         // 渲染角色卡片
@@ -3318,27 +3910,58 @@
         }
 
         // 清空当前队伍
-        function clearCurrentTeam() {
+        async function clearCurrentTeam() {
             if (state.teams[state.currentTeam - 1].length === 0) return;
             
             if (!confirm('确定要清空当前队伍吗？')) return;
             
-            state.teams[state.currentTeam - 1] = [];
-            renderTeams();
-            renderCharacters();
-            updateHiddenCharacters();
-            saveToLocalStorage();
-            showMessage('队伍已清空');
+            try {
+                state.teams[state.currentTeam - 1] = [];
+                
+                // 从IndexedDB删除队伍数据
+                const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                const store = transaction.objectStore(STORES.TEAMS);
+                store.delete(state.currentTeam);
+                
+                await new Promise((resolve, reject) => {
+                    transaction.oncomplete = resolve;
+                    transaction.onerror = () => reject(transaction.error);
+                });
+                
+                renderTeams();
+                renderCharacters();
+                updateHiddenCharacters();
+                
+                showMessage('队伍已清空');
+            } catch (error) {
+                console.error('清空队伍失败:', error);
+                showMessage('清空队伍失败，请重试', 'error');
+            }
         }
 
         // 从队伍中移除角色
-        function removeFromTeam(characterId) {
-            state.teams[state.currentTeam - 1] = state.teams[state.currentTeam - 1].filter(id => id !== characterId);
-            renderTeams();
-            renderCharacters();
-            updateHiddenCharacters();
-            saveToLocalStorage();
-            showMessage('角色已从队伍中移除');
+        async function removeFromTeam(characterId) {
+            try {
+                state.teams[state.currentTeam - 1] = state.teams[state.currentTeam - 1].filter(id => id !== characterId);
+                
+                // 保存队伍到IndexedDB
+                if (state.teams[state.currentTeam - 1].length > 0) {
+                    await saveTeam(state.currentTeam, state.teams[state.currentTeam - 1]);
+                } else {
+                    const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                    const store = transaction.objectStore(STORES.TEAMS);
+                    store.delete(state.currentTeam);
+                }
+                
+                renderTeams();
+                renderCharacters();
+                updateHiddenCharacters();
+                
+                showMessage('角色已从队伍中移除');
+            } catch (error) {
+                console.error('从队伍移除角色失败:', error);
+                showMessage('操作失败，请重试', 'error');
+            }
         }
 
         // 拖拽功能
@@ -3387,7 +4010,7 @@
         }
 
         // 放置到队伍位置
-        function handleDrop(e) {
+        async function handleDrop(e) {
             e.preventDefault();
             this.classList.remove('drop-over');
             
@@ -3412,30 +4035,52 @@
                 currentTeam[slotIndex] = characterId;
             }
             
-            renderTeams();
-            renderCharacters();
-            updateHiddenCharacters();
-            saveToLocalStorage();
-            showMessage('角色已加入队伍');
+            // 保存队伍到IndexedDB
+            try {
+                await saveTeam(state.currentTeam, currentTeam);
+                
+                renderTeams();
+                renderCharacters();
+                updateHiddenCharacters();
+                
+                showMessage('角色已加入队伍');
+            } catch (error) {
+                console.error('保存队伍失败:', error);
+                showMessage('添加角色到队伍失败', 'error');
+            }
         }
 
         // 放置到我的角色区域（从队伍中移除）
-        function handleDropToMyCharacters(e) {
+        async function handleDropToMyCharacters(e) {
             e.preventDefault();
             const characterId = e.dataTransfer.getData('text/plain');
             
             if (!characterId) return;
             
-            // 从所有队伍中移除
-            for (let i = 0; i < state.teams.length; i++) {
-                state.teams[i] = state.teams[i].filter(id => id !== characterId);
+            try {
+                // 从所有队伍中移除
+                for (let i = 0; i < state.teams.length; i++) {
+                    state.teams[i] = state.teams[i].filter(id => id !== characterId);
+                    
+                    // 更新IndexedDB
+                    if (state.teams[i].length > 0) {
+                        await saveTeam(i + 1, state.teams[i]);
+                    } else {
+                        const transaction = db.transaction([STORES.TEAMS], 'readwrite');
+                        const store = transaction.objectStore(STORES.TEAMS);
+                        store.delete(i + 1);
+                    }
+                }
+                
+                renderTeams();
+                renderCharacters();
+                updateHiddenCharacters();
+                
+                showMessage('角色已从队伍中移除');
+            } catch (error) {
+                console.error('从队伍移除角色失败:', error);
+                showMessage('移除角色失败，请重试', 'error');
             }
-            
-            renderTeams();
-            renderCharacters();
-            updateHiddenCharacters();
-            saveToLocalStorage();
-            showMessage('角色已从队伍中移除');
         }
 
         // 更新隐藏角色计数
@@ -3447,149 +4092,261 @@
         }
 
         // 导出数据
-        function exportData() {
-            const data = {
-                characters: state.characters,
-                hiddenCharacters: state.hiddenCharacters,
-                teams: state.teams,
-                currentTeam: state.currentTeam,
-                exportDate: new Date().toISOString(),
-                version: '1.6.0',
-                appName: '欲神幻想梯度榜',
-                exportNote: '使用"导入数据"功能可以恢复此文件中的数据'
-            };
-            
-            // 生成文件名：欲神幻想梯度榜数据+日期
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            
-            const filename = `欲神幻想梯度榜数据${year}年${month}月${day}日${hours}时${minutes}分.json`;
-            
-            // 创建下载链接
-            const jsonData = JSON.stringify(data, null, 2);
-            const blob = new Blob([jsonData], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showMessage(`数据已导出为：${filename}`);
+        async function exportData() {
+            try {
+                showProcessing('正在准备导出数据...', '请稍候');
+                
+                // 从IndexedDB获取所有数据
+                const characters = await getAllCharacters();
+                const allCharacters = [];
+                
+                // 为每个角色获取图片
+                for (const character of characters) {
+                    const charWithImage = { ...character };
+                    const imageData = await getImage(character.id);
+                    charWithImage.image = imageData ? imageData.dataUrl : DEFAULT_IMAGE_PATH;
+                    allCharacters.push(charWithImage);
+                }
+                
+                // 分离普通角色和隐藏角色
+                const normalCharacters = allCharacters.filter(c => !c.hidden);
+                const hiddenCharacters = allCharacters.filter(c => c.hidden);
+                
+                // 获取队伍数据
+                const teams = [];
+                for (let i = 1; i <= 4; i++) {
+                    const team = await getTeam(i);
+                    teams.push(team ? team.characterIds : []);
+                }
+                
+                // 获取应用状态
+                const currentTeam = await getAppState('currentTeam') || 1;
+                
+                const data = {
+                    characters: normalCharacters,
+                    hiddenCharacters: hiddenCharacters,
+                    teams: teams,
+                    currentTeam: currentTeam,
+                    exportDate: new Date().toISOString(),
+                    version: '2.0.0',
+                    appName: '欲神幻想梯度榜',
+                    exportNote: '使用"导入数据"功能可以恢复此文件中的数据',
+                    storageType: 'IndexedDB分离存储'
+                };
+                
+                // 生成文件名：欲神幻想梯度榜数据+日期
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                
+                const filename = `欲神幻想梯度榜数据${year}年${month}月${day}日${hours}时${minutes}分.json`;
+                
+                // 创建下载链接
+                const jsonData = JSON.stringify(data, null, 2);
+                const blob = new Blob([jsonData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                hideProcessing();
+                showMessage(`数据已导出为：${filename}`);
+                
+            } catch (error) {
+                hideProcessing();
+                console.error('导出数据失败:', error);
+                showMessage('导出数据失败，请重试', 'error');
+            }
         }
 
-        // 导入数据
-        function importData(event) {
+        // 导入数据 - 支持旧版数据结构迁移
+        async function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // 确认是否覆盖现有数据
-            if (state.characters.length > 0 || state.hiddenCharacters.length > 0) {
-                if (!confirm('导入数据将覆盖现有数据，确定继续吗？')) {
-                    event.target.value = '';
-                    return;
-                }
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const jsonData = JSON.parse(e.target.result);
-                    
-                    // 验证数据格式
-                    if (!jsonData.characters || !jsonData.teams) {
-                        throw new Error('文件格式不正确，请选择正确的数据文件');
-                    }
-                    
-                    // 检查是否是欲神幻想梯度榜的数据文件
-                    if (!jsonData.appName || !jsonData.appName.includes('欲神幻想梯度榜')) {
-                        if (!confirm('检测到这不是欲神幻想梯度榜的数据文件，可能无法正确导入。是否继续？')) {
-                            event.target.value = '';
-                            return;
-                        }
-                    }
-                    
-                    // 更新状态
-                    state.characters = jsonData.characters || [];
-                    state.hiddenCharacters = jsonData.hiddenCharacters || [];
-                    state.teams = jsonData.teams || [[], [], [], []];
-                    state.currentTeam = jsonData.currentTeam || 1;
-                    
-                    // 更新显示
-                    renderCharacters();
-                    updateHiddenCharacters();
-                    renderTeams();
-                    updateHiddenCount();
-                    
-                    // 保存到本地存储
-                    saveToLocalStorage();
-                    
-                    showMessage('数据导入成功！');
-                    
-                } catch (error) {
-                    console.error('导入失败:', error);
-                    showMessage('导入失败：文件格式不正确或已损坏', 'error');
-                }
+            try {
+                showProcessing('正在导入数据...', '请稍候，可能需要一些时间处理');
                 
-                // 清空文件输入
-                event.target.value = '';
-            };
-            
-            reader.onerror = function() {
-                showMessage('读取文件失败，请重试', 'error');
-                event.target.value = '';
-            };
-            
-            reader.readAsText(file);
-        }
-
-        // 本地存储
-        function saveToLocalStorage() {
-            const data = {
-                characters: state.characters,
-                hiddenCharacters: state.hiddenCharacters,
-                teams: state.teams,
-                currentTeam: state.currentTeam,
-                lastSave: new Date().toISOString()
-            };
-            localStorage.setItem('yshx-character-data', JSON.stringify(data));
-        }
-
-        function loadFromLocalStorage() {
-            const saved = localStorage.getItem('yshx-character-data');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    state.characters = data.characters || [];
-                    state.hiddenCharacters = data.hiddenCharacters || [];
-                    state.teams = data.teams || [[], [], [], []];
-                    state.currentTeam = data.currentTeam || 1;
-                    
-                    // 显示上次保存时间
-                    if (data.lastSave) {
-                        const lastSave = new Date(data.lastSave);
-                        console.log(`数据已从本地存储加载，上次保存时间：${lastSave.toLocaleString('zh-CN')}`);
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    try {
+                        const jsonData = JSON.parse(e.target.result);
+                        
+                        // 验证数据格式
+                        if (!jsonData.characters && !jsonData.appName) {
+                            throw new Error('文件格式不正确，请选择正确的数据文件');
+                        }
+                        
+                        // 检查是否是欲神幻想梯度榜的数据文件
+                        const isOldVersion = jsonData.appName && jsonData.appName.includes('欲神幻想梯度榜');
+                        
+                        if (!isOldVersion) {
+                            if (!confirm('检测到这不是欲神幻想梯度榜的数据文件，可能无法正确导入。是否继续？')) {
+                                event.target.value = '';
+                                hideProcessing();
+                                return;
+                            }
+                        }
+                        
+                        // 确认是否覆盖现有数据
+                        const existingCharacters = await getAllCharacters();
+                        if (existingCharacters.length > 0) {
+                            if (!confirm('导入数据将覆盖现有数据，确定继续吗？')) {
+                                event.target.value = '';
+                                hideProcessing();
+                                return;
+                            }
+                        }
+                        
+                        // 清空现有数据
+                        await clearAllDataSilently();
+                        
+                        // 处理旧版数据结构（包含图片数据在角色对象中）
+                        if (jsonData.characters && jsonData.characters.length > 0) {
+                            console.log(`开始导入 ${jsonData.characters.length} 个角色数据`);
+                            
+                            // 分批处理，避免内存问题
+                            const batchSize = 50;
+                            for (let i = 0; i < jsonData.characters.length; i += batchSize) {
+                                const batch = jsonData.characters.slice(i, i + batchSize);
+                                
+                                for (const character of batch) {
+                                    // 分离图片数据
+                                    let imageData = null;
+                                    if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
+                                        imageData = {
+                                            characterId: character.id,
+                                            dataUrl: character.image
+                                        };
+                                        // 从角色对象中移除图片数据，只保存图片ID引用
+                                        delete character.image;
+                                    }
+                                    
+                                    // 保存角色信息
+                                    await saveCharacter(character);
+                                    
+                                    // 保存图片数据到单独存储
+                                    if (imageData) {
+                                        await saveImage(imageData);
+                                    }
+                                }
+                                
+                                // 更新进度
+                                const processed = Math.min(i + batchSize, jsonData.characters.length);
+                                document.getElementById('globalProcessingStatus').textContent = 
+                                    `正在处理角色数据: ${processed}/${jsonData.characters.length}`;
+                            }
+                        }
+                        
+                        // 处理隐藏角色
+                        if (jsonData.hiddenCharacters && jsonData.hiddenCharacters.length > 0) {
+                            console.log(`开始导入 ${jsonData.hiddenCharacters.length} 个隐藏角色数据`);
+                            
+                            for (const character of jsonData.hiddenCharacters) {
+                                let imageData = null;
+                                if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
+                                    imageData = {
+                                        characterId: character.id,
+                                        dataUrl: character.image
+                                    };
+                                    delete character.image;
+                                }
+                                
+                                await saveCharacter(character);
+                                
+                                if (imageData) {
+                                    await saveImage(imageData);
+                                }
+                            }
+                        }
+                        
+                        // 处理队伍数据
+                        if (jsonData.teams) {
+                            for (let i = 0; i < jsonData.teams.length; i++) {
+                                if (jsonData.teams[i] && jsonData.teams[i].length > 0) {
+                                    await saveTeam(i + 1, jsonData.teams[i]);
+                                }
+                            }
+                        }
+                        
+                        // 处理应用状态
+                        if (jsonData.currentTeam) {
+                            await saveAppState('currentTeam', jsonData.currentTeam);
+                        }
+                        
+                        // 重新加载数据
+                        await loadAllData();
+                        
+                        // 更新UI
+                        renderCharacters();
+                        updateHiddenCharacters();
+                        renderTeams();
+                        updateHiddenCount();
+                        
+                        hideProcessing();
+                        showMessage(`数据导入成功！共导入了 ${jsonData.characters?.length || 0} 个角色`);
+                        
+                    } catch (error) {
+                        console.error('导入失败:', error);
+                        hideProcessing();
+                        showMessage(`导入失败：${error.message}`, 'error');
                     }
-                } catch (error) {
-                    console.error('加载本地存储数据失败:', error);
-                    // 如果解析失败，使用默认值
-                    state.characters = [];
-                    state.hiddenCharacters = [];
-                    state.teams = [[], [], [], []];
-                    state.currentTeam = 1;
-                }
-            } else {
-                // 初始化为空
+                    
+                    // 清空文件输入
+                    event.target.value = '';
+                };
+                
+                reader.onerror = function() {
+                    hideProcessing();
+                    showMessage('读取文件失败，请重试', 'error');
+                    event.target.value = '';
+                };
+                
+                reader.readAsText(file);
+                
+            } catch (error) {
+                hideProcessing();
+                console.error('导入过程出错:', error);
+                showMessage('导入过程出错，请重试', 'error');
+            }
+        }
+
+        // 静默清空所有数据（用于导入前的清理）
+        async function clearAllDataSilently() {
+            try {
+                const transaction = db.transaction(
+                    [STORES.CHARACTERS, STORES.IMAGES, STORES.TEAMS, STORES.APP_STATE], 
+                    'readwrite'
+                );
+                
+                transaction.objectStore(STORES.CHARACTERS).clear();
+                transaction.objectStore(STORES.IMAGES).clear();
+                transaction.objectStore(STORES.TEAMS).clear();
+                transaction.objectStore(STORES.APP_STATE).clear();
+                
+                await new Promise((resolve, reject) => {
+                    transaction.oncomplete = resolve;
+                    transaction.onerror = () => reject(transaction.error);
+                });
+                
+                // 重置内存状态
                 state.characters = [];
                 state.hiddenCharacters = [];
                 state.teams = [[], [], [], []];
                 state.currentTeam = 1;
+                
+                console.log('数据已清空，准备导入新数据');
+            } catch (error) {
+                console.error('清空数据失败:', error);
+                throw error;
             }
         }
     </script>
