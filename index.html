@@ -1626,7 +1626,7 @@
         <img src="./images/picture1.png" alt="左装饰图" class="header-img left glow-effect">
         <div class="header-title">
             <h1 class="main-title breathe-effect">欲神幻想梯度榜</h1>
-            <p class="subtitle">FTN工作室出品·IndexedDB大容量存储版</p>
+            <p class="subtitle">FTN工作室出品·全新IndexedDB储存架构</p>
         </div>
         <img src="./images/picture2.png" alt="右装饰图" class="header-img right glow-effect">
     </div>
@@ -1815,7 +1815,7 @@
 
     <!-- 页脚 -->
     <footer>
-        欲神幻想梯度榜 v2.0 · FTN工作室出品 · IndexedDB大容量存储版
+        欲神幻想梯度榜 v2.0 · FTN工作室出品 · 全新IndexedDB储存架构版
     </footer>
 
     <!-- 教程模态框 -->
@@ -1827,15 +1827,14 @@
             </div>
             <div class="tutorial-modal-body" id="tutorialContent">
                 <h3>欢迎使用欲神幻想梯度榜 v2.0</h3>
-                <p>本工具由FTN工作室开发，现已升级为IndexedDB存储，支持超大容量数据存储，解决之前数据量过大导致的问题。</p>
+                <p>本工具由FTN工作室开发，现已升级为IndexedDB存储架构，支持超大容量数据存储，解决之前数据量过大导致的崩溃问题。</p>
                 
                 <h3>主要更新</h3>
                 <ul>
-                    <li><strong>IndexedDB存储</strong>：支持存储数千个角色卡片，不再受localStorage 5MB限制</li>
-                    <li><strong>数据自动迁移</strong>：首次打开新版本会自动迁移旧版数据到IndexedDB</li>
-                    <li><strong>旧版数据抢救</strong>：可导入旧版超大JSON文件，数据将迁移到IndexedDB</li>
-                    <li><strong>图片分离存储</strong>：图片和文字信息分离存储，优化性能</li>
-                    <li><strong>UI优化</strong>：调整角色评价按钮，修复超出卡片框的问题</li>
+                    <li><strong>IndexedDB存储架构</strong>：理论可承载数千张角色卡片的数据，在数据量100Mb的测试条件下连续测试无异常</li>
+                    <li><strong>数据自动迁移</strong>：首次打开新版本会自动迁移旧版数据到新架构，无须担心数据丢失</li>
+                    <li><strong>旧版数据抢救</strong>：可导入旧版过大的json备份文件，数据将完整迁移到新架构</li>
+                    <li><strong>图片分离存储</strong>：新架构中数据采用分类储存及内部ID绑定，以优化超大数据量下的加载速度及稳定性</li>
                 </ul>
                 
                 <!-- 原有教程内容保持不变 -->
@@ -1846,6 +1845,8 @@
                     <li><strong>搜索排序</strong>：通过关键词搜索角色、按星级、PVE/PVP评分自动排序</li>
                     <li><strong>数据管理</strong>：导入/导出数据，与他人互相分享卡片，备份自己的数据</li>
                     <li><strong>批量导出图片</strong>：通过导入多个图片来快速为卡片添加/更新角色图片</li>
+                    
+<li><strong>清空所有数据</strong>：提供更快捷的清空数据方式，以方便特殊需求</li>
                 </ul>
                 
                 <h3>详细使用说明</h3>
@@ -1888,7 +1889,7 @@
                 <ul>
                     <li><strong>导出数据</strong>：点击"导出数据"按钮，浏览器会自动下载json格式的数据文件（不包括角色图），标注有创建时间</li>
                     <li><strong>导入数据</strong>：点击"导入数据"按钮，选择正确的json格式文件即可获得数据（不包括角色图），导入前注意备份</li>
-                    <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动保存到IndexedDB，无需点击任何东西</li>
+                    <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动通过新架构保存到浏览器，无需点击任何东西</li>
                 </ul>
                 
                 <h4>6. 批量导入角色图片（手动匹配）</h4>
