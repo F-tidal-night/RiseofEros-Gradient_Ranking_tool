@@ -25,6 +25,10 @@
             --text-color: #f0e6ff;
             --success-green: #4ade80;
             --warning-orange: #fbbf24;
+            --image-loading-bg:
+                radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.22) 100%),
+                url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2221%22%20fill%3D%22none%22%20stroke%3D%22%23fa67b2%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%20stroke-dasharray%3D%2275%2057%22%3E%3CanimateTransform%20attributeName%3D%22transform%22%20type%3D%22rotate%22%20from%3D%220%2032%2032%22%20to%3D%22360%2032%2032%22%20dur%3D%220.9s%22%20repeatCount%3D%22indefinite%22%2F%3E%3C%2Fcircle%3E%3C%2Fsvg%3E") center / 68px 68px no-repeat,
+                rgba(0, 0, 0, 0.2);
         }
 
         body {
@@ -1107,6 +1111,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            background: var(--image-loading-bg);
             transition: transform 0.5s;
         }
 
@@ -2110,6 +2115,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            background: var(--image-loading-bg);
             border-radius: 12px;
             display: block;
         }
@@ -2908,6 +2914,19 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // 注册Service Worker（HTTPS下生效，用于缓存官方角色图；本地文件模式自动跳过）
+        // Header decorations: PNG -> WebP fallback for GitHub releases that only ship WebP.
+        // Bound immediately at script start so a fast 404 cannot beat the handler.
+        const headerImageFallbacks = [
+            [document.querySelector('.header-img.left'), './images/picture1.webp'],
+            [document.querySelector('.header-img.right'), './images/picture2.webp']
+        ];
+        for (const [headerImg, fallbackSrc] of headerImageFallbacks) {
+            if (!headerImg) continue;
+            headerImg.addEventListener('error', function() {
+                staticImageFallback(this, fallbackSrc);
+            });
+        }
+
         if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('./sw.js').catch(function(error) {
@@ -2966,6 +2985,8 @@
 
         // 默认图片路径
         const DEFAULT_IMAGE_PATH = './images/normal.png';
+        // Default image also falls back PNG -> WebP (GitHub release may only ship WebP)
+        const DEFAULT_IMAGE_CANDIDATES = ['./images/normal.png', './images/normal.webp'];
         
         // v3：生成角色图片候选列表——个人上传图优先；文件夹图片按 PNG→WebP→JPG→JPEG 顺序尝试
         function getCardImageSrcList(character) {
@@ -2992,11 +3013,22 @@
             const extensions = ['png', 'webp', 'jpg', 'jpeg'];
             for (const ext of extensions) {
                 results.push('./images/' + baseName + '.' + ext);
-                if (swappedName) {
-                    results.push('./images/' + swappedName + '.' + ext);
+                    if (swappedName) {
+                        results.push('./images/' + swappedName + '.' + ext);
+                    }
+                }
+                return results;
+            }
+
+        // Card image candidate chain: own file (PNG->WebP->JPG->JPEG) then default image (PNG->WebP)
+        function buildImageCandidatesWithFallback(character) {
+            const merged = getCardImageSrcList(character).slice();
+            for (const fallbackPath of DEFAULT_IMAGE_CANDIDATES) {
+                if (merged.indexOf(fallbackPath) === -1) {
+                    merged.push(fallbackPath);
                 }
             }
-            return results;
+            return merged;
         }
 
         // 兼容旧调用：返回第一个候选（无候选则默认图）
@@ -3020,14 +3052,29 @@
             if (nextSrc) {
                 img.src = nextSrc;
             } else {
+                // All candidates (including default PNG/WebP) failed:
+                // clear src so no broken-image icon is shown, the CSS spinner stays visible
                 img.onerror = null;
-                img.src = DEFAULT_IMAGE_PATH;
+                img.removeAttribute('onerror');
+                img.removeAttribute('src');
             }
+        }
+
+        // Static images (header decorations) fall back PNG -> WebP when PNG is missing online
+        function staticImageFallback(img, fallbackSrc) {
+            if (!img) return;
+            const currentSrc = img.getAttribute('src') || '';
+            if (currentSrc === fallbackSrc || !fallbackSrc) {
+                // Secondary fallback also failed: clear src to avoid a broken-image icon
+                img.removeAttribute('src');
+                return;
+            }
+            img.setAttribute('src', fallbackSrc);
         }
 
         // 生成带候选回退链的角色图片HTML
         function cardImageHtml(character, className, extraAttrs = '') {
-            const candidates = getCardImageSrcList(character);
+            const candidates = buildImageCandidatesWithFallback(character);
             const firstSrc = candidates.length > 0 ? candidates[0] : DEFAULT_IMAGE_PATH;
             const classAttr = className ? ` class="${className}"` : '';
             const extraAttr = extraAttrs ? ' ' + extraAttrs : '';
@@ -3120,6 +3167,7 @@
         let isScrolling = false;
         let mouseY = 0;
         let messageHideTimer = null;
+        let isLibraryImporting = false;
         
         // 拖拽自动滚动配置
         function getScrollConfig() {
@@ -6100,7 +6148,21 @@
 
         // 导入/更新资料库：同名角色刷新评级与图片引用，个人星级/评价/隐藏/队伍一律保留
         // 支持两种来源：本地文件（事件对象）或在线拉取（externalJson + externalVersion）
+        // Wrapper with a re-entry guard: online fetch and file import share this lock
         async function importLibraryPack(event, externalJson, externalVersion) {
+            if (isLibraryImporting) {
+                showMessage('已有资料库更新正在进行，请稍候...', 'warning');
+                return;
+            }
+            isLibraryImporting = true;
+            try {
+                await importLibraryPackImpl(event, externalJson, externalVersion);
+            } finally {
+                isLibraryImporting = false;
+            }
+        }
+
+        async function importLibraryPackImpl(event, externalJson, externalVersion) {
             const fromFile = !!(event && event.target && event.target.files && event.target.files.length);
             let file = null;
             let filenameVersion = '';
