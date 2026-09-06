@@ -3139,7 +3139,7 @@
         
         // 可选：GitHub raw 基址（例如 https://raw.githubusercontent.com/用户名/仓库名/main/），
         // 填写后即使本地/文件方式打开也能在线更新；留空则仅网页版支持在线更新
-        const LIBRARY_REMOTE_BASE_URL = '';
+        const LIBRARY_REMOTE_BASE_URL = 'https://raw.githubusercontent.com/f-tidal-night/RiseofEros-Gradient_Ranking_tool/main/';
         const STORES = {
             CHARACTERS: 'characters',
             IMAGES: 'images',
@@ -6308,7 +6308,10 @@
 
         // 在线获取并导入最新官方资料库（通过固定版本指针定位当前vX.X.X包）
         async function fetchAndApplyLatestLibrary() {
-            const baseUrl = LIBRARY_REMOTE_BASE_URL || (location.protocol.startsWith('http') ? './' : '');
+            // Web/HTTPS 打开优先取同目录（与页面同步发布）；本地文件方式打开则用 GitHub raw 基址
+            const baseUrl = location.protocol.startsWith('http')
+                ? './'
+                : (LIBRARY_REMOTE_BASE_URL || '');
             if (!baseUrl) {
                 showMessage('当前环境无法在线拉取（未配置远程基址），请用“选择本地文件”导入官方包', 'warning');
                 return;
