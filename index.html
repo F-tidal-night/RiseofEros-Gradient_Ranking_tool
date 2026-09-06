@@ -1985,8 +1985,12 @@
         @media (max-width: 480px) {
             .cards-container,
             .hidden-cards-container {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 10px;
+            }
+
+            .character-card {
+                min-width: 0;
             }
 
             .card-content {
@@ -2014,7 +2018,7 @@
             }
 
             .team-slots-container {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .team-slot {
@@ -2655,96 +2659,82 @@
                 <button class="tutorial-modal-close">&times;</button>
             </div>
             <div class="tutorial-modal-body" id="tutorialContent">
-                <h3>欢迎使用欲神幻想梯度榜 v3.2</h3>
-                <p>本工具由FTN工作室开发，现已升级为IndexedDB存储架构，支持超大容量数据存储，解决之前数据量过大导致的崩溃问题。</p>
+                <h3>欢迎使用欲神幻想梯度榜</h3>
+                <p>FTN工作室出品。数据都存你浏览器里，随便加卡不卡不崩；换设备之前记得先“导出数据”。</p>
                 
-                <h3>主要更新</h3>
+                <h3>主要更新（就两件大事）</h3>
                 <ul>
-                    <li><strong>IndexedDB存储架构</strong>：理论可承载数千张角色卡片的数据，在数据量100Mb的测试条件下连续测试无异常</li>
-                    <li><strong>数据自动迁移</strong>：首次打开新版本会自动迁移旧版数据到新架构，无须担心数据丢失</li>
-                    <li><strong>旧版数据抢救</strong>：可导入旧版过大的json备份文件，数据将完整迁移到新架构</li>
-                    <li><strong>图片分离存储</strong>：新架构中数据采用分类储存及内部ID绑定，以优化超大数据量下的加载速度及稳定性</li>
-                    <li><strong>v2.1 稳定性修复</strong>：离线或CDN异常时仍可正常使用；导入前自动备份并以单事务写入防止数据损坏；修复拖拽到边缘自动滚动失效的问题</li>
-                    <li><strong>v3.0 资料库更新</strong>：官方数据包可通过"导入/更新资料库"合并刷新评级，新角色自动加入，个人星级、评价、隐藏状态与队伍配置全部保留</li>
-                    <li><strong>v3.1 操作与界面优化</strong>：新增回收站、批量修改星级/评级、导入资料库时可选保留个人评级/评价、一键入队与配队界面重构；整体卡片和移动端界面重做</li>
-                    <li><strong>v3.2 评级体系</strong>：PVE/PVP 由 10 分制改为 T0~T3 评级；旧版 10 分数据首次打开会自动转换并覆盖（10→T0、9-8→T0.5、7-6→T1、5-4→T2、3及以下→T3）</li>
+                    <li><strong>评级换成 T 级</strong>：PVE/PVP 用 T0~T3（T0最高、T3最低）。旧版 10 分数据第一次打开会自动换算：10→T0、9-8→T0.5、7-6→T1、5-4→T2、3及以下→T3，不用手动改。</li>
+                    <li><strong>资料库一键更新</strong>：点“导入/更新资料库”就能拿到新评级、新角色。星级是你的练度，永远不动；评级和评价想保留自己那版，就勾“保留”。</li>
+                </ul>
+                <h3>主要功能（一句话看懂）</h3>
+                <ul>
+                    <li><strong>加角色</strong>：起个名、填星级和评级，就是一张卡；还能加图、写两句备注</li>
+                    <li><strong>配队模拟</strong>：把角色拖进队伍，或者直接点卡片上的“加入队伍”；想换位置，拖一下就互换</li>
+                    <li><strong>搜索排序</strong>：想找谁就搜名字，想排强度就按星级/PVE/PVP评级排</li>
+                    <li><strong>批量改</strong>：一堆角色一次性改星级/评级，不用一张一张点</li>
+                    <li><strong>回收站</strong>：手滑删了？去回收站捞回来就行</li>
+                    <li><strong>更新资料库</strong>：点“导入/更新资料库”就能拿到最新评级和评价，你的练度不会丢</li>
+                    <li><strong>图片自动配</strong>：图包文件名规规矩矩的话，选好图点一下“自动匹配”就全对上了</li>
                 </ul>
                 
-                <!-- 原有教程内容保持不变 -->
-                <h3>主要功能</h3>
+                <h3>怎么用（超简单版）</h3>
+                <h4>1. 加角色</h4>
                 <ul>
-                    <li><strong>创建角色</strong>：添加角色，设置突破星级、PVE/PVP评级、评价</li>
-                    <li><strong>配队模拟</strong>：拖拽角色卡片模拟游戏内的配队</li>
-                    <li><strong>搜索排序</strong>：通过关键词搜索角色、按星级、PVE/PVP评级自动排序</li>
-                    <li><strong>数据管理</strong>：导入/导出数据，与他人互相分享卡片，备份自己的数据</li>
-                    <li><strong>批量导入角色图片</strong>：通过批量选择图片，快速为多张卡片添加或更新角色图片</li>
-                    
-<li><strong>清空所有数据</strong>：提供更快捷的清空数据方式，以方便特殊需求</li>
+                    <li><strong>名字</strong>：照“角色名-皮肤名”填，比如 露妃-墨染金香，以后自动配图才找得到</li>
+                    <li><strong>星级</strong>：按你账号里实际练度填</li>
+                    <li><strong>评级</strong>：T0 最高，T3 最低，工作室每版会更新</li>
+                    <li><strong>评价</strong>：想写就写，不写也不拦你</li>
+                    <li><strong>图片</strong>：传不传都行，不传先用默认图顶着，之后随时能补</li>
                 </ul>
                 
-                <h3>详细使用说明</h3>
-                <h4>1. 创建角色</h4>
-                <p>填写角色相关信息以创建卡片：</p>
+                <h4>2. 配队</h4>
                 <ul>
-                    <li><strong>角色名字</strong>：推荐按照示例格式填写，方便对照标准图包</li>
-                    <li><strong>角色星级</strong>：按照自己账号内角色练度填写即可</li>
-                    <li><strong>PVE/PVP评级</strong>：等级为T0~T3（T0最高、T3最低），由工作室按版本发布</li>
-                    <li><strong>角色评价</strong>：非必填，可对角色自由评价备注</li>
-                    <li><strong>角色图片</strong>：非必填，上传尺寸360x406的图片最佳，如未填写，将使用默认图</li>
+                    <li>顶部队伍1~4，点哪个就配哪个队</li>
+                    <li>放人：拖过去，或点卡片下面绿色的“加入队伍”；队伍满4人后按钮会变灰，想换人就把新卡拖到已有角色身上顶掉</li>
+                    <li>调位置：队伍里直接把卡拖到另一个格子，会互换/挪位</li>
+                    <li>不要了：点格子里的 ×，或拖回“我的角色”区域</li>
                 </ul>
                 
-                <h4>2. 配队模拟</h4>
-                <p>提供更好的配队预览体验：</p>
+                <h4>3. 管理卡片</h4>
                 <ul>
-                    <li><strong>切换队伍</strong>：点击上方标签切换不同队伍</li>
-                    <li><strong>添加角色</strong>：从"我的角色"区域拖拽卡片到队伍虚线框中</li>
-                    <li><strong>移除角色</strong>：点击队伍中卡片右上角的移除按钮，或拖拽回"我的角色"区域亦可</li>
-                    <li><strong>清空队伍</strong>：点击右上角"清空当前配队"按钮即可一键清空当前选中的队伍</li>
-                    <li><strong>拖动体验优化</strong>：拖动角色卡片时，将鼠标移动到页面边缘可自动滚动页面，便于长列表操作</li>
+                    <li>卡片右上角三个小图标：改 / 删 / 藏</li>
+                    <li>删除先进回收站，还能捞回来；彻底清掉才真正没</li>
+                    <li>藏起来的角色在页面下方“被隐藏的角色”里，也能搜索</li>
+                    <li>点“角色评价”看备注，点一下收起</li>
                 </ul>
                 
-                <h4>3. 管理角色</h4>
-                <p>浏览你创建的角色以及其强度信息：</p>
+                <h4>4. 备份 / 换设备</h4>
                 <ul>
-                    <li><strong>编辑</strong>：点击角色卡片右上角编辑按钮即可修改角色信息，修改完记得点击按钮保存</li>
-                    <li><strong>删除</strong>：点击删除按钮后确认操作即可删除该卡片</li>
-                    <li><strong>隐藏</strong>：点击隐藏按钮即可将卡片移至底部折叠栏</li>
-                    <li><strong>查看评价</strong>：点击卡片下方"角色评价"按钮即可展开/收起评价内容</li>
+                    <li><strong>导出数据</strong> = 把整份存档下成一个 json 文件</li>
+                    <li><strong>导入数据</strong> = 把存档恢复回来；导入前会自动帮你备份当前数据，不怕手滑</li>
+                    <li>数据存在浏览器里，换电脑、清缓存、换浏览器之前，先导出一份，不然找不回来</li>
                 </ul>
                 
-                <h4>4. 搜索与排序</h4>
+                <h4>5. 官方资料库更新</h4>
                 <ul>
-                    <li><strong>搜索</strong>：在搜索框输入角色名字即可自动筛选所需角色卡片</li>
-                    <li><strong>排序</strong>：点击按钮即可按对应信息从高到低排序，再次点击取消排序</li>
+                    <li>工作室出新评级/新角色时，点“导入/更新资料库”</li>
+                    <li>网页版直接点“从服务器获取最新官方包”；群文件版就选命名是“欲神幻想梯度榜官方资料库vX.X.X.json”的文件</li>
+                    <li>星级、隐藏状态、队伍配置永远不动；评级和评价想保留就勾上对应的“保留”</li>
+                    <li>更新完如果新角色没图，把图包里的图放进 images 文件夹，或直接批量导入一次</li>
                 </ul>
                 
-                <h4>5. 数据管理</h4>
+                <h4>6. 批量加图</h4>
                 <ul>
-                    <li><strong>导出数据</strong>：点击"导出数据"按钮，浏览器会自动下载json格式的数据文件（含个人上传图片，官方图按文件名引用不入库，文件更小），文件名标注有创建时间</li>
-                    <li><strong>导入数据</strong>：点击"导入数据"按钮，选择正确的json格式文件即可恢复数据（文件含图片时也会一并恢复），导入前工具会自动备份当前数据</li>
-                    <li><strong>数据自动保存</strong>：创建好的角色卡片数据会自动通过新架构保存到浏览器，无需点击任何东西</li>
-                    <li><strong>导入/更新资料库</strong>：选择工作室发布的官方数据包（文件需按规范命名：欲神幻想梯度榜官方资料库vX.X.X.json）后，同名角色自动刷新为最新PVE/PVP评级与官方评价，新增角色会自动创建卡片；你自己的星级、隐藏状态、队伍配置不会被覆盖，更新完成后建议用图包补齐新角色的图片</li>
-                    <li><strong>导出官方资料库</strong>：维护者专用（入口在页面底部小字链接）：导出不含任何个人图片数据的官方包（文件名自动生成），发布时请连同角色图包一起分发</li>
-                </ul>
-                
-                <h4>6. 批量导入角色图片（手动匹配）</h4>
-                <p>为多个卡片缺少图片时提供更便利、清晰的操作：</p>
-                <ul>
-                    <li><strong>准备图片</strong>：群内下载FTN工作室提供的标准全角色图压缩包，或百度网盘https://pan.baidu.com/s/1P7viHRQswaf-EDO-AB_TTg?pwd=0114</li>
-                    <li><strong>导入图片</strong>：可按需求多选图片，推荐按角色本名分批处理更清晰，一次全导入可能出现卡顿/报错问题</li>
-                    <li><strong>匹配图片</strong>：可选所有角色/仅无图片角色来添加角色图片，添加完毕后记得左下角应用更改哦</li>
+                    <li>图包文件名是“角色名.png/webp”就能自动认：选图 → 点“按文件名自动匹配” → 应用更改</li>
+                    <li>个别名字对不上，就手动一张张点着配，不麻烦</li>
                 </ul>
                 
                 <h4>7. 常见问题</h4>
                 <ul>
-                    <li><strong>图片上传失败</strong>：请检查图片尺寸及格式（支持jpg、png等常见格式）</li>
-                    <li><strong>批量导入失败</strong>：请检查图片是否损坏，若无损坏请尝试减少单次导入量</li>
-                    <li><strong>数据丢失</strong>：更换/清理浏览器或更换设备前请先导出数据，数据保存依赖于浏览器</li>
+                    <li><strong>图片传不上去？</strong>看看是不是格式/损坏问题，jpg、png、webp 都支持</li>
+                    <li><strong>批量导入报错/卡？</strong>别一次全选，按角色分批来</li>
+                    <li><strong>数据没了？</strong>十有八九是换浏览器/清缓存了，养成“动浏览器前先导出”的习惯</li>
                 </ul>
                 
                 <h3>注意事项</h3>
                 <ul>
-                    <li>推荐使用chorme、Edge等稳定浏览器</li>
+                    <li>推荐使用 Chrome、Edge 等稳定浏览器</li>
                     <li>请勿随意修改官方图包，以防数据损坏</li>
                     <li>本文件夹内所有原始文件版权归"FTN工作室"所有</li>
                     <li>本工具无偿分享！严禁二次兜售！违者死全家！</li>
@@ -2917,6 +2907,15 @@
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // 注册Service Worker（HTTPS下生效，用于缓存官方角色图；本地文件模式自动跳过）
+        if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js').catch(function(error) {
+                    console.warn('Service Worker 注册失败（不影响正常使用）:', error);
+                });
+            });
+        }
+
         // 初始化粒子效果
         document.addEventListener('DOMContentLoaded', function() {
             // 先启动主应用：即使粒子库加载失败（离线或CDN异常），核心功能仍可正常使用
@@ -2968,15 +2967,71 @@
         // 默认图片路径
         const DEFAULT_IMAGE_PATH = './images/normal.png';
         
-        // v3：解析角色显示用图片——优先个人上传图，其次资料库图片文件，最后默认图
+        // v3：生成角色图片候选列表——个人上传图优先；文件夹图片按 PNG→WebP→JPG→JPEG 顺序尝试
+        function getCardImageSrcList(character) {
+            if (!character) return [];
+            if (character.image && character.image !== DEFAULT_IMAGE_PATH) {
+                return [character.image];
+            }
+            
+            let rawFile = character.imgFile || '';
+            if (rawFile.startsWith('./images/')) {
+                rawFile = rawFile.slice('./images/'.length);
+            }
+            if (!rawFile) return [];
+            const baseName = rawFile.replace(/\.[^.]+$/, '');
+            if (!baseName) return [];
+            
+            const results = [];
+            const parts = baseName.split('-');
+            const swappedName = parts.length > 1
+                ? (parts.slice(1).join('-') + '-' + parts[0])
+                : '';
+            
+            // 顺序即优先级：PNG 原图 → WebP → JPG → JPEG；再补一个“皮肤名-角色名”倒序兜底
+            const extensions = ['png', 'webp', 'jpg', 'jpeg'];
+            for (const ext of extensions) {
+                results.push('./images/' + baseName + '.' + ext);
+                if (swappedName) {
+                    results.push('./images/' + swappedName + '.' + ext);
+                }
+            }
+            return results;
+        }
+
+        // 兼容旧调用：返回第一个候选（无候选则默认图）
         function resolveCardImage(character) {
-            if (character && character.image && character.image !== DEFAULT_IMAGE_PATH) {
-                return character.image;
+            const list = getCardImageSrcList(character);
+            return list.length > 0 ? list[0] : DEFAULT_IMAGE_PATH;
+        }
+
+        // 图片加载失败时按候选列表尝试下一个格式，全部失败回落默认图
+        function nextCardImage(img) {
+            if (!img) return;
+            let candidates = [];
+            try {
+                candidates = JSON.parse(img.dataset.candidates || '[]');
+            } catch (error) {
+                candidates = [];
             }
-            if (character && character.imgFile) {
-                return './images/' + character.imgFile;
+            const currentSrc = img.getAttribute('src');
+            const currentIndex = candidates.indexOf(currentSrc);
+            const nextSrc = candidates[currentIndex + 1];
+            if (nextSrc) {
+                img.src = nextSrc;
+            } else {
+                img.onerror = null;
+                img.src = DEFAULT_IMAGE_PATH;
             }
-            return DEFAULT_IMAGE_PATH;
+        }
+
+        // 生成带候选回退链的角色图片HTML
+        function cardImageHtml(character, className, extraAttrs = '') {
+            const candidates = getCardImageSrcList(character);
+            const firstSrc = candidates.length > 0 ? candidates[0] : DEFAULT_IMAGE_PATH;
+            const classAttr = className ? ` class="${className}"` : '';
+            const extraAttr = extraAttrs ? ' ' + extraAttrs : '';
+            return `<img src="${escapeHtml(firstSrc)}"${classAttr} alt="${escapeHtml(character ? character.name : '')}" loading="lazy" decoding="async" data-candidates="${escapeHtml(JSON.stringify(candidates))}" onerror="nextCardImage(this)"${extraAttr}>`;
         }
 
         // T级评级体系：T0 > T0.5 > T1 > T2 > T3
@@ -4107,7 +4162,7 @@
                 return `
                     <div class="batch-char-item ${checked ? 'checked' : ''}" data-id="${escapeHtml(id)}">
                         <input type="checkbox" ${checked ? 'checked' : ''}>
-                        <img class="batch-char-thumb" src="${escapeHtml(resolveCardImage(character))}" alt="${escapeHtml(character.name)}" loading="lazy" decoding="async" onerror="this.style.visibility='hidden';">
+                        ${cardImageHtml(character, 'batch-char-thumb')}
                         <span class="batch-char-name">${escapeHtml(character.name)}${escapeHtml(character.hiddenTag)}</span>
                         <span class="batch-char-meta">${escapeHtml(character.stars)}★ · PVE ${escapeHtml(character.pve)} · PVP ${escapeHtml(character.pvp)}</span>
                     </div>
@@ -4425,7 +4480,7 @@
             let filteredCharacters = allCharacters;
             if (matchState.currentFilter === 'no-image') {
                 filteredCharacters = allCharacters.filter(character => 
-                    resolveCardImage(character) === DEFAULT_IMAGE_PATH
+                    getCardImageSrcList(character).length === 0
                 );
             }
             
@@ -4436,15 +4491,15 @@
             container.innerHTML = filteredCharacters.map((character, index) => {
                 const isSelected = matchState.selectedCharacterId === character.id;
                 const matchedImage = matchState.characterMatches.get(character.id);
-                const charImageSrc = resolveCardImage(character);
+                const hasCardFileImage = getCardImageSrcList(character).length > 0;
                 
                 return `
                     <div class="character-match-item ${isSelected ? 'selected' : ''}" data-id="${escapeHtml(character.id)}">
                         <div class="character-match-avatar">
                             ${matchedImage ? 
                                 `<img src="${escapeHtml(matchedImage.dataUrl)}" alt="${escapeHtml(character.name)}">` :
-                                (charImageSrc !== DEFAULT_IMAGE_PATH ? 
-                                    `<img src="${escapeHtml(charImageSrc)}" alt="${escapeHtml(character.name)}">` :
+                                (hasCardFileImage ? 
+                                    cardImageHtml(character) :
                                     `<i class="fas fa-user" style="color: var(--light-purple); font-size: 2rem;"></i>`
                                 )
                             }
@@ -5313,10 +5368,8 @@
                 '<button class="card-action-btn show-btn" data-action="show" title="显示"><i class="fas fa-eye"></i></button>' :
                 '<button class="card-action-btn hide-btn" data-action="hide" title="隐藏"><i class="fas fa-eye-slash"></i></button>';
             
-            // 解析显示用图片：个人上传图 > 资料库图片文件 > 默认图
-            const cardImageSrc = resolveCardImage(character);
-            const useDefaultImage = !cardImageSrc || cardImageSrc === DEFAULT_IMAGE_PATH;
-            const fallbackAttr = useDefaultImage ? '' : ' onerror="this.onerror=null;this.src=\'./images/normal.png\';"';
+            // 图片HTML：个人图优先，文件夹内按 PNG→WebP→JPG→JPEG 依次回退
+            const cardImageHTML = cardImageHtml(character, 'card-image');
             const teamAddButtonHTML = isHidden ? '' : `
                 <button class="card-team-add-btn" data-action="team-add" ${inCurrentTeam || currentTeamFull ? 'disabled' : ''}>
                     <i class="fas fa-user-plus"></i> ${inCurrentTeam ? '已在当前队伍' : (currentTeamFull ? '当前队伍已满' : '加入队伍')}
@@ -5331,10 +5384,7 @@
                         ${hideShowBtn}
                     </div>
                     <div class="card-image-container">
-                        ${useDefaultImage ? 
-                            `<img src="${DEFAULT_IMAGE_PATH}" alt="${escapeHtml(character.name)}" class="card-image" loading="lazy" decoding="async">` :
-                            `<img src="${escapeHtml(cardImageSrc)}" alt="${escapeHtml(character.name)}" class="card-image" loading="lazy" decoding="async"${fallbackAttr}>`
-                        }
+                        ${cardImageHTML}
                     </div>
                     <div class="card-content">
                         <h3 class="card-name" title="${escapeHtml(character.name)}">${escapeHtml(character.name)}</h3>
@@ -5479,11 +5529,10 @@
 
         // 生成紧凑队员卡（配队模拟专用）
         function createTeamMemberHTML(character) {
-            const memberImageSrc = resolveCardImage(character);
             return `
                 <div class="team-member-card" data-id="${escapeHtml(character.id)}" draggable="true">
                     <div class="team-member-img">
-                        <img src="${escapeHtml(memberImageSrc)}" alt="${escapeHtml(character.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='./images/normal.png';">
+                        ${cardImageHtml(character)}
                         <button class="card-action-btn delete-btn team-member-remove" data-action="remove-from-team" title="从队伍移除">
                             <i class="fas fa-times"></i>
                         </button>
